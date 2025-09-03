@@ -1,0 +1,81 @@
+# =========================
+# Archivos y carpetas de sistema
+# =========================
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+Thumbs.db
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# =========================
+# Configuración de IDEs
+# =========================
+*.iml
+*.ipr
+*.iws
+.idea/
+# Descomenta si no quieres subir config de VS Code
+#.vscode/
+
+# =========================
+# Flutter / Dart / Pub
+# =========================
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# =========================
+# Archivos de symbolication y ofuscación
+# =========================
+app.*.symbols
+app.*.map.json
+
+# =========================
+# Android
+# =========================
+/android/app/debug
+/android/app/profile
+/android/app/release
+/android/.gradle/
+/android/local.properties
+
+# =========================
+# iOS
+# =========================
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/ServiceDefinitions.json
+ios/Runner/GeneratedPluginRegistrant.*
+
+# =========================
+# Web
+# =========================
+web/.dart_tool/
+web/build/
+
+# =========================
+# Archivos sensibles / credenciales
+# =========================
+*.env
+*.keystore
+*.jks
+google-services.json
+GoogleService-Info.plist
+firebase_options.dart
