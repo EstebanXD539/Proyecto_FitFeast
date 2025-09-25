@@ -1,4 +1,4 @@
-import 'package:app_fitfeast/homepage.dart';
+import 'package:app_fitfeast/src/features/auth_presentation/views/register_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeFitFeast(),
+      home: RegistroFitFeast(),
     );
   }
 }

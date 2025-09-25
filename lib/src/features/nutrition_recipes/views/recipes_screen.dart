@@ -1,3 +1,4 @@
+import 'package:app_fitfeast/src/features/workouts/views/workout_list_screen.dart';
 import 'package:flutter/material.dart';
 
 class PantallaRecetas extends StatelessWidget {
@@ -10,9 +11,20 @@ class PantallaRecetas extends StatelessWidget {
 
       // Barra inferior
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 2,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
+        onTap: (index) {
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const PantallaEjercicios(),
+              ),
+            );
+          }
+        },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Inicio"),
           BottomNavigationBarItem(
@@ -63,9 +75,7 @@ class PantallaRecetas extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 image: const DecorationImage(
-                  image: AssetImage(
-                    'assets/menu_semanal.jpg',
-                  ), // Reemplaza con tu imagen
+                  image: AssetImage('images/menu_semanal.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -94,7 +104,7 @@ class PantallaRecetas extends StatelessWidget {
                 _iconoCircular("Desayuno", Icons.free_breakfast),
                 _iconoCircular("Almuerzo", Icons.lunch_dining),
                 _iconoCircular("Merienda", Icons.cookie),
-                _iconoCircular("Almuerzo", Icons.rice_bowl),
+                _iconoCircular("Cena", Icons.rice_bowl),
               ],
             ),
             const SizedBox(height: 24),
@@ -107,12 +117,12 @@ class PantallaRecetas extends StatelessWidget {
             const SizedBox(height: 12),
             _tarjetaReceta(
               "Batido de proteínas y frutas",
-              "assets/batido_frutas.jpg",
+              "images/batido_frutas.png",
             ),
             const SizedBox(height: 12),
             _tarjetaReceta(
               "Batido de Kiwi con proteína",
-              "assets/batido_kiwi.jpg",
+              "images/batido_kiwi.jpg",
             ),
             const SizedBox(height: 40),
           ],

@@ -1,40 +1,11 @@
 import 'package:flutter/material.dart';
 
-class FitFeastApp extends StatelessWidget {
-  const FitFeastApp({super.key});
+class PantallaEjercicios extends StatelessWidget {
+  const PantallaEjercicios({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'FitFeast',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        useMaterial3: true,
-      ),
-      home: const ExercisesPage(),
-    );
-  }
-}
-
-class ExercisesPage extends StatelessWidget {
-  const ExercisesPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final exercises = [
-      {
-        'title': 'Flexiones de Pecho',
-        'desc': 'Mejora tu fuerza y tronco central',
-        'image':
-            'https://via.placeholder.com/400x200', // reemplaza con tu asset o URL
-      },
-      {
-        'title': 'Plancha',
-        'desc': 'Mejora tu resistencia y fortalece los músculos del abdomen',
-        'image': 'https://via.placeholder.com/400x200',
-      },
-    ];
+    final exercises = [];
 
     return Scaffold(
       appBar: AppBar(title: const Text('Ejercicios'), centerTitle: true),
