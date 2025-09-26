@@ -1,29 +1,12 @@
 import 'package:flutter/material.dart';
 
-class PerfilUsuario extends StatelessWidget {
-  const PerfilUsuario({super.key});
+class PantallaUsuario extends StatelessWidget {
+  const PantallaUsuario({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Inicio"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label: "Ejercicios",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant_menu),
-            label: "Recetas",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.flag), label: "Retos"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Perfil"),
-        ],
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: ListView(
@@ -114,7 +97,9 @@ class PerfilUsuario extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Aquí puedes hacer logout y volver al login con Navigator.pushReplacement
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   padding: const EdgeInsets.symmetric(vertical: 16),

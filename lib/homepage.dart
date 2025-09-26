@@ -1,33 +1,12 @@
 import 'package:flutter/material.dart';
 
-class HomeFitFeast extends StatelessWidget {
-  const HomeFitFeast({super.key});
+class PantallaInicio extends StatelessWidget {
+  const PantallaInicio({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
-      // Barra de navegación inferior
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Inicio"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label: "Ejercicios",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant_menu),
-            label: "Recetas",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.flag), label: "Retos"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Perfil"),
-        ],
-      ),
-
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: ListView(

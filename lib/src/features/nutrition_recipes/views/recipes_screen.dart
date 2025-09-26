@@ -1,4 +1,4 @@
-import 'package:app_fitfeast/src/features/workouts/views/workout_list_screen.dart';
+import 'package:app_fitfeast/src/features/nutrition_recipes/views/recipes_details_screen.dart';
 import 'package:flutter/material.dart';
 
 class PantallaRecetas extends StatelessWidget {
@@ -8,38 +8,6 @@ class PantallaRecetas extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
-      // Barra inferior
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 2,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const PantallaEjercicios(),
-              ),
-            );
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Inicio"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label: "Ejercicios",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant_menu),
-            label: "Recetas",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.flag), label: "Retos"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Perfil"),
-        ],
-      ),
-
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: ListView(
@@ -115,14 +83,20 @@ class PantallaRecetas extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
+
+            // 👇 Cada tarjeta ahora navega a PantallaDetalleReceta
             _tarjetaReceta(
+              context,
               "Batido de proteínas y frutas",
               "images/batido_frutas.png",
+              "Un batido energético con proteínas y frutas frescas ideal para después del entrenamiento.",
             ),
             const SizedBox(height: 12),
             _tarjetaReceta(
+              context,
               "Batido de Kiwi con proteína",
               "images/batido_kiwi.jpg",
+              "Refrescante batido de kiwi con proteína, perfecto para recuperar energía.",
             ),
             const SizedBox(height: 40),
           ],
@@ -161,33 +135,52 @@ class PantallaRecetas extends StatelessWidget {
     );
   }
 
-  // Tarjeta de receta
-  Widget _tarjetaReceta(String titulo, String imagen) {
-    return Container(
-      height: 160,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        image: DecorationImage(image: AssetImage(imagen), fit: BoxFit.cover),
-      ),
-      alignment: Alignment.bottomLeft,
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          const Text(
-            "Brand",
-            style: TextStyle(color: Colors.white, fontSize: 12),
-          ),
-          Text(
-            titulo,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+  // Tarjeta de receta con navegación
+  Widget _tarjetaReceta(
+    BuildContext context,
+    String titulo,
+    String imagen,
+    String descripcion,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PantallaDetalleReceta(
+              titulo: titulo,
+              imagen: imagen,
+              descripcion: descripcion,
             ),
           ),
-        ],
+        );
+      },
+      child: Container(
+        height: 160,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          image: DecorationImage(image: AssetImage(imagen), fit: BoxFit.cover),
+        ),
+        alignment: Alignment.bottomLeft,
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            const Text(
+              "Brand",
+              style: TextStyle(color: Colors.white, fontSize: 12),
+            ),
+            Text(
+              titulo,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

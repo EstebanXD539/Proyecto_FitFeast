@@ -1,5 +1,5 @@
 import 'package:app_fitfeast/src/features/auth_presentation/views/register_screen.dart';
-import 'package:app_fitfeast/src/features/nutrition_recipes/views/recipes_screen.dart';
+import 'package:app_fitfeast/widgetAux';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -42,7 +42,7 @@ class _LoginFitFeastState extends State<LoginFitFeast> {
     // Reemplaza la pantalla de carga por la siguiente (ejemplo: Registro)
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => const PantallaRecetas()),
+      MaterialPageRoute(builder: (_) => const NavigationBottomBar()),
     );
   }
 

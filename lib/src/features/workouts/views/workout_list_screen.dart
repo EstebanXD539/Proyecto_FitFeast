@@ -5,7 +5,20 @@ class PantallaEjercicios extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final exercises = [];
+    final exercises = [
+      {
+        'title': 'Plancha',
+        'desc': 'Ejercicio de core y abdomen',
+        'image':
+            'https://tse4.mm.bing.net/th/id/OIP.zBQG9c8RZLeQpiR1uhf5cAHaEK?rs=1&pid=ImgDetMain&o=7&rm=3',
+      },
+      {
+        'title': 'Burpees',
+        'desc': 'Ejercicio de cuerpo completo',
+        'image':
+            'https://tse1.explicit.bing.net/th/id/OIP.l3MaRHzuXayMYPLsSOGffAHaE8?rs=1&pid=ImgDetMain&o=7&rm=3',
+      },
+    ];
 
     return Scaffold(
       appBar: AppBar(title: const Text('Ejercicios'), centerTitle: true),
@@ -24,6 +37,7 @@ class PantallaEjercicios extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
+
             // Filtros y resultados
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,6 +56,7 @@ class PantallaEjercicios extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
+
             // Lista de ejercicios
             Expanded(
               child: ListView.builder(
@@ -96,24 +111,6 @@ class PantallaEjercicios extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      // Barra de navegación inferior
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: 1,
-        onDestinationSelected: (index) {},
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Inicio'),
-          NavigationDestination(
-            icon: Icon(Icons.fitness_center),
-            label: 'Ejercicios',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.restaurant_menu),
-            label: 'Recetas',
-          ),
-          NavigationDestination(icon: Icon(Icons.flag), label: 'Retos'),
-          NavigationDestination(icon: Icon(Icons.person), label: 'Perfil'),
-        ],
       ),
     );
   }
