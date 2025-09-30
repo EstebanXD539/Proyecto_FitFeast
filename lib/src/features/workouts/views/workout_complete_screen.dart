@@ -1,67 +1,79 @@
 import 'package:flutter/material.dart';
 
 class RutinaCompletada extends StatelessWidget {
-  const RutinaCompletada({super.key});
+  final Map<String, dynamic> ejercicio;
+
+  const RutinaCompletada({super.key, required this.ejercicio});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: ListView(
           children: [
             const SizedBox(height: 40),
 
-            // Ilustración decorativa
+            // Imagen del ejercicio
             SizedBox(
               height: 200,
-              child: Image.asset(
-                'assets/running_illustration.png', // Reemplaza con tu imagen
-                fit: BoxFit.contain,
+              child: Image.network(
+                ejercicio["imagenUrl"] ?? "",
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.broken_image, size: 100),
               ),
             ),
             const SizedBox(height: 24),
 
-            // Título y felicitación
-            const Center(
+            // Nombre y descripción
+            Center(
               child: Column(
                 children: [
                   Text(
-                    "Rutina Completada",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ejercicio["nombre"] ?? "Ejercicio",
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  SizedBox(height: 8),
-                  Text("¡Felicidades, Luis!", style: TextStyle(fontSize: 20)),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
-                    "Has completado tu rutina de entrenamiento.\n¡Sigue así y alcanza tus metas!",
+                    ejercicio["descripcion"] ?? "",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 32),
 
-            // Resumen del ejercicio
+            // Detalles
             const Text(
-              "Resumen del ejercicio",
+              "Detalles del ejercicio",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
-            const Text(
-              "⏱️ Tiempo Total: 45 minutos",
-              style: TextStyle(fontSize: 16),
+            Text(
+              "Categoría: ${ejercicio["categoria"] ?? "-"}",
+              style: const TextStyle(fontSize: 16),
             ),
-            const Text(
-              "🔥 Calorías quemadas: 350 kcal",
-              style: TextStyle(fontSize: 16),
+            Text(
+              "Músculos: ${ejercicio["musculoObjetivo"] ?? "-"}",
+              style: const TextStyle(fontSize: 16),
+            ),
+            Text(
+              "Dificultad: ${ejercicio["dificultad"] ?? "-"}",
+              style: const TextStyle(fontSize: 16),
+            ),
+            Text(
+              "Duración: ${ejercicio["duracion"] ?? "-"} min",
+              style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 24),
 
-            // Consejos post-entrenamiento con íconos en cuadrados grises
+            // Consejos
             const Text(
               "Consejos post-entrenamiento",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -74,12 +86,12 @@ class RutinaCompletada extends StatelessWidget {
             _consejoCuadro("Resistencia"),
             const SizedBox(height: 32),
 
-            // Botón volver al inicio
+            // Botón volver
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context); // O navega a pantalla principal
+                  Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
@@ -101,7 +113,6 @@ class RutinaCompletada extends StatelessWidget {
     );
   }
 
-  // Widget para consejo con ícono en cuadro gris
   Widget _consejoCuadro(String texto) {
     return Row(
       children: [

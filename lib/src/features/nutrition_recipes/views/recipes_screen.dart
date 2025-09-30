@@ -1,186 +1,88 @@
-import 'package:app_fitfeast/src/features/nutrition_recipes/views/recipes_details_screen.dart';
+import 'package:app_fitfeast/src/features/auth_presentation/views/receta_service.dart';
 import 'package:flutter/material.dart';
+import 'recipes_details_screen.dart';
 
-class PantallaRecetas extends StatelessWidget {
+class PantallaRecetas extends StatefulWidget {
   const PantallaRecetas({super.key});
+
+  @override
+  State<PantallaRecetas> createState() => _PantallaRecetasState();
+}
+
+class _PantallaRecetasState extends State<PantallaRecetas> {
+  final RecetaService _recetaService = RecetaService();
+  late Future<List<Map<String, dynamic>>> _futureRecetas;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureRecetas = _recetaService.getRecetas();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: ListView(
-          children: [
-            const SizedBox(height: 40),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: _futureRecetas,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                "Error: ${snapshot.error}",
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text("No hay recetas"));
+          }
 
-            // Barra de búsqueda
-            TextField(
-              decoration: InputDecoration(
-                hintText: "Buscar recetas",
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+          final recetas = snapshot.data!;
+
+          return ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: recetas.length,
+            itemBuilder: (context, index) {
+              final receta = recetas[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => PantallaDetalleReceta(receta: receta),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 160,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    image: receta["imagenUrl"] != null
+                        ? DecorationImage(
+                            image: NetworkImage(receta["imagenUrl"]),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
+                  ),
+                  alignment: Alignment.bottomLeft,
+                  padding: const EdgeInsets.all(12),
+                  child: Text(
+                    receta["titulo"] ?? "Sin título",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      shadows: [Shadow(blurRadius: 4, color: Colors.black)],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Botones rápidos
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _botonAcceso("Favoritos", Icons.favorite),
-                _botonAcceso("Historial", Icons.history),
-                _botonAcceso("Categoría", Icons.category),
-              ],
-            ),
-            const SizedBox(height: 24),
-
-            // Banner Menú Semanal
-            Container(
-              height: 140,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                image: const DecorationImage(
-                  image: AssetImage('images/menu_semanal.jpg'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              alignment: Alignment.bottomLeft,
-              padding: const EdgeInsets.all(12),
-              child: const Text(
-                "Menú Semanal",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Sugerencias
-            const Text(
-              "Sugerencias",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _iconoCircular("Desayuno", Icons.free_breakfast),
-                _iconoCircular("Almuerzo", Icons.lunch_dining),
-                _iconoCircular("Merienda", Icons.cookie),
-                _iconoCircular("Cena", Icons.rice_bowl),
-              ],
-            ),
-            const SizedBox(height: 24),
-
-            // Recetas
-            const Text(
-              "Recetas",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-
-            // 👇 Cada tarjeta ahora navega a PantallaDetalleReceta
-            _tarjetaReceta(
-              context,
-              "Batido de proteínas y frutas",
-              "images/batido_frutas.png",
-              "Un batido energético con proteínas y frutas frescas ideal para después del entrenamiento.",
-            ),
-            const SizedBox(height: 12),
-            _tarjetaReceta(
-              context,
-              "Batido de Kiwi con proteína",
-              "images/batido_kiwi.jpg",
-              "Refrescante batido de kiwi con proteína, perfecto para recuperar energía.",
-            ),
-            const SizedBox(height: 40),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Botón de acceso rápido
-  Widget _botonAcceso(String texto, IconData icono) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 24,
-          backgroundColor: Colors.grey.shade200,
-          child: Icon(icono, color: Colors.black),
-        ),
-        const SizedBox(height: 4),
-        Text(texto, style: const TextStyle(fontSize: 14)),
-      ],
-    );
-  }
-
-  // Ícono circular de sugerencia
-  Widget _iconoCircular(String texto, IconData icono) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 28,
-          backgroundColor: Colors.grey.shade100,
-          child: Icon(icono, size: 28, color: Colors.black),
-        ),
-        const SizedBox(height: 6),
-        Text(texto, style: const TextStyle(fontSize: 13)),
-      ],
-    );
-  }
-
-  // Tarjeta de receta con navegación
-  Widget _tarjetaReceta(
-    BuildContext context,
-    String titulo,
-    String imagen,
-    String descripcion,
-  ) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PantallaDetalleReceta(
-              titulo: titulo,
-              imagen: imagen,
-              descripcion: descripcion,
-            ),
-          ),
-        );
-      },
-      child: Container(
-        height: 160,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          image: DecorationImage(image: AssetImage(imagen), fit: BoxFit.cover),
-        ),
-        alignment: Alignment.bottomLeft,
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            const Text(
-              "Brand",
-              style: TextStyle(color: Colors.white, fontSize: 12),
-            ),
-            Text(
-              titulo,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
+              );
+            },
+          );
+        },
       ),
     );
   }
