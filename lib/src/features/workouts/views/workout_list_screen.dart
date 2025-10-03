@@ -1,4 +1,4 @@
-import 'package:app_fitfeast/src/features/auth_presentation/ejercicios_service.dart';
+import 'package:app_fitfeast/src/core/services/ejercicios_service.dart';
 import 'package:app_fitfeast/src/features/workouts/views/workout_complete_screen.dart';
 import 'package:flutter/material.dart';
 

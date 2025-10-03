@@ -9,7 +9,9 @@ class PantallaDetalleReceta extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(receta["titulo"] ?? "Receta")),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(
+        context,
+      ).scaffoldBackgroundColor, // 👈 respeta tema
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -27,32 +29,44 @@ class PantallaDetalleReceta extends StatelessWidget {
           // Descripción
           Text(
             receta["descripcion"] ?? "",
-            style: const TextStyle(fontSize: 16),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 16),
           ),
           const SizedBox(height: 24),
 
           // Ingredientes
-          const Text(
+          Text(
             "Ingredientes",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
           ),
           const SizedBox(height: 8),
           ...List<Widget>.from(
             (receta["ingredientes"] as List<dynamic>? ?? []).map(
-              (ing) => Text("• $ing"),
+              (ing) =>
+                  Text("• $ing", style: Theme.of(context).textTheme.bodyMedium),
             ),
           ),
           const SizedBox(height: 24),
 
           // Preparación
-          const Text(
+          Text(
             "Preparación",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
           ),
           const SizedBox(height: 8),
           ...List<Widget>.from(
             (receta["preparacion"] as List<dynamic>? ?? []).map(
-              (paso) => Text("• $paso"),
+              (paso) => Text(
+                "• $paso",
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
           ),
           const SizedBox(height: 32),
@@ -67,15 +81,22 @@ class PantallaDetalleReceta extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.primary, // 👈 usa color del tema
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.zero,
                 ),
               ),
-              child: const Text(
+              child: Text(
                 "Guardar Receta",
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary, // 👈 contraste automático
+                  fontSize: 16,
+                ),
               ),
             ),
           ),

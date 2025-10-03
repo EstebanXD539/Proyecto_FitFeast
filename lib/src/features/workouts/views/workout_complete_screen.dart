@@ -8,7 +8,9 @@ class RutinaCompletada extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(
+        context,
+      ).scaffoldBackgroundColor, // 👈 respeta tema
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: ListView(
@@ -33,8 +35,7 @@ class RutinaCompletada extends StatelessWidget {
                 children: [
                   Text(
                     ejercicio["nombre"] ?? "Ejercicio",
-                    style: const TextStyle(
-                      fontSize: 24,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -42,7 +43,9 @@ class RutinaCompletada extends StatelessWidget {
                   Text(
                     ejercicio["descripcion"] ?? "",
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(fontSize: 16),
                   ),
                 ],
               ),
@@ -50,40 +53,46 @@ class RutinaCompletada extends StatelessWidget {
             const SizedBox(height: 32),
 
             // Detalles
-            const Text(
+            Text(
               "Detalles del ejercicio",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
             ),
             const SizedBox(height: 12),
             Text(
               "Categoría: ${ejercicio["categoria"] ?? "-"}",
-              style: const TextStyle(fontSize: 16),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             Text(
               "Músculos: ${ejercicio["musculoObjetivo"] ?? "-"}",
-              style: const TextStyle(fontSize: 16),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             Text(
               "Dificultad: ${ejercicio["dificultad"] ?? "-"}",
-              style: const TextStyle(fontSize: 16),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             Text(
               "Duración: ${ejercicio["duracion"] ?? "-"} min",
-              style: const TextStyle(fontSize: 16),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),
 
             // Consejos
-            const Text(
+            Text(
               "Consejos post-entrenamiento",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
             ),
             const SizedBox(height: 12),
-            _consejoCuadro("Hidratación"),
+            _consejoCuadro(context, "Hidratación"),
             const SizedBox(height: 8),
-            _consejoCuadro("Estiramientos"),
+            _consejoCuadro(context, "Estiramientos"),
             const SizedBox(height: 8),
-            _consejoCuadro("Resistencia"),
+            _consejoCuadro(context, "Resistencia"),
             const SizedBox(height: 32),
 
             // Botón volver
@@ -94,15 +103,22 @@ class RutinaCompletada extends StatelessWidget {
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.primary, // 👈 usa color del tema
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero,
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   "Volver al inicio",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary, // 👈 contraste automático
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ),
@@ -113,20 +129,28 @@ class RutinaCompletada extends StatelessWidget {
     );
   }
 
-  Widget _consejoCuadro(String texto) {
+  Widget _consejoCuadro(BuildContext context, String texto) {
     return Row(
       children: [
         Container(
           width: 36,
           height: 36,
           decoration: BoxDecoration(
-            color: Colors.grey.shade300,
+            color: Theme.of(
+              context,
+            ).colorScheme.secondaryContainer, // 👈 respeta tema
             borderRadius: BorderRadius.circular(6),
           ),
-          child: const Icon(Icons.star, color: Colors.black),
+          child: Icon(
+            Icons.star,
+            color: Theme.of(context).colorScheme.onSecondaryContainer,
+          ),
         ),
         const SizedBox(width: 12),
-        Text(texto, style: const TextStyle(fontSize: 16)),
+        Text(
+          texto,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16),
+        ),
       ],
     );
   }

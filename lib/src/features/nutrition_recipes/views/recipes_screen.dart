@@ -1,4 +1,4 @@
-import 'package:app_fitfeast/src/features/auth_presentation/views/receta_service.dart';
+import 'package:app_fitfeast/src/core/services/receta_service.dart';
 import 'package:flutter/material.dart';
 import 'recipes_details_screen.dart';
 
@@ -22,7 +22,9 @@ class _PantallaRecetasState extends State<PantallaRecetas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(
+        context,
+      ).scaffoldBackgroundColor, // 👈 respeta tema
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _futureRecetas,
         builder: (context, snapshot) {
@@ -32,11 +34,20 @@ class _PantallaRecetasState extends State<PantallaRecetas> {
             return Center(
               child: Text(
                 "Error: ${snapshot.error}",
-                style: const TextStyle(color: Colors.red),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                ), // 👈 usa color del tema
               ),
             );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text("No hay recetas"));
+            return Center(
+              child: Text(
+                "No hay recetas",
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge, // 👈 usa tipografía del tema
+              ),
+            );
           }
 
           final recetas = snapshot.data!;
@@ -66,16 +77,21 @@ class _PantallaRecetasState extends State<PantallaRecetas> {
                             fit: BoxFit.cover,
                           )
                         : null,
+                    color: Theme.of(
+                      context,
+                    ).cardColor, // 👈 fondo adaptado si no hay imagen
                   ),
                   alignment: Alignment.bottomLeft,
                   padding: const EdgeInsets.all(12),
                   child: Text(
                     receta["titulo"] ?? "Sin título",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Colors
+                          .white, // 👈 mantenemos blanco para contraste sobre imagen
                       fontWeight: FontWeight.bold,
-                      shadows: [Shadow(blurRadius: 4, color: Colors.black)],
+                      shadows: const [
+                        Shadow(blurRadius: 4, color: Colors.black),
+                      ],
                     ),
                   ),
                 ),

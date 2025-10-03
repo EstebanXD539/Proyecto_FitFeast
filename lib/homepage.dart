@@ -1,5 +1,13 @@
-import 'package:app_fitfeast/src/features/auth_presentation/views/auth_service.dart';
+// pantallainicio_actualizado.dart
+import 'package:app_fitfeast/src/features/workouts/views/vista_cardio.dart';
+import 'package:app_fitfeast/src/features/workouts/views/vista_ciclismo.dart';
+import 'package:app_fitfeast/src/features/workouts/views/vista_flexibilidad.dart';
+import 'package:app_fitfeast/src/features/workouts/views/vista_fuerza.dart';
+import 'package:app_fitfeast/src/features/workouts/views/vista_pilates.dart';
+import 'package:app_fitfeast/src/features/workouts/views/vista_trote.dart';
 import 'package:flutter/material.dart';
+import 'package:app_fitfeast/src/core/services/auth_service.dart';
+import 'package:app_fitfeast/src/features/workouts/views/progreso_diario_widget.dart';
 
 class PantallaInicio extends StatefulWidget {
   const PantallaInicio({super.key});
@@ -38,12 +46,8 @@ class _PantallaInicioState extends State<PantallaInicio> {
 
   @override
   Widget build(BuildContext context) {
-    int restantes = objetivo - (comida - ejercicio);
-    if (restantes < 0) restantes = 0;
-    double progreso = (objetivo - restantes) / objetivo;
-
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
@@ -51,59 +55,23 @@ class _PantallaInicioState extends State<PantallaInicio> {
               children: [
                 const SizedBox(height: 20),
 
-                // Indicador circular
+                // Indicador circular modularizado
                 Center(
-                  child: Column(
-                    children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          SizedBox(
-                            width: 160,
-                            height: 160,
-                            child: CircularProgressIndicator(
-                              value: progreso,
-                              strokeWidth: 14,
-                              backgroundColor: Colors.grey.shade200,
-                              color: Colors.green,
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              Text(
-                                "$restantes",
-                                style: const TextStyle(
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const Text(
-                                "Restantes",
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              Text(
-                                "Objetivo base $objetivo",
-                                style: const TextStyle(color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        "Comida $comida • Ejercicio $ejercicio",
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                    ],
+                  child: ProgresoDiarioWidget(
+                    objetivo: objetivo,
+                    comida: comida,
+                    ejercicio: ejercicio,
                   ),
                 ),
 
                 const SizedBox(height: 32),
 
                 // ------------------ SECCIÓN EJERCICIOS ------------------
-                const Text(
+                Text(
                   "Ejercicios",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 12),
                 SizedBox(
@@ -111,9 +79,24 @@ class _PantallaInicioState extends State<PantallaInicio> {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
-                      _buildExerciseCard("Trote", Icons.directions_run),
-                      _buildExerciseCard("Ciclismo", Icons.pedal_bike),
-                      _buildExerciseCard("Pilates", Icons.self_improvement),
+                      _buildExerciseCard(
+                        context,
+                        "Trote",
+                        Icons.directions_run,
+                        const VistaTrote(),
+                      ),
+                      _buildExerciseCard(
+                        context,
+                        "Ciclismo",
+                        Icons.pedal_bike,
+                        const VistaCiclismo(),
+                      ),
+                      _buildExerciseCard(
+                        context,
+                        "Pilates",
+                        Icons.self_improvement,
+                        const VistaPilates(),
+                      ),
                     ],
                   ),
                 ),
@@ -121,27 +104,35 @@ class _PantallaInicioState extends State<PantallaInicio> {
                 const SizedBox(height: 32),
 
                 // ------------------ SECCIÓN CONSEJOS ------------------
-                const Text(
+                Text(
                   "Consejos",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 12),
                 Column(
                   children: [
                     _buildTipCard(
+                      context,
                       "Fuerza",
                       Icons.fitness_center,
                       "Entrena 3 veces por semana",
+                      const VistaFuerza(),
                     ),
                     _buildTipCard(
+                      context,
                       "Cardio",
                       Icons.favorite,
                       "Haz al menos 30 min de cardio",
+                      const VistaCardio(),
                     ),
                     _buildTipCard(
+                      context,
                       "Flexibilidad",
                       Icons.accessibility_new,
                       "Estira después de entrenar",
+                      const VistaFlexibilidad(),
                     ),
                   ],
                 ),
@@ -150,57 +141,93 @@ class _PantallaInicioState extends State<PantallaInicio> {
     );
   }
 
-  // Widget para tarjetas de ejercicios
-  Widget _buildExerciseCard(String title, IconData icon) {
-    return Container(
-      width: 120,
-      margin: const EdgeInsets.only(right: 12),
-      decoration: BoxDecoration(
-        color: Colors.green.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.green.shade200),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 40, color: Colors.green),
-          const SizedBox(height: 8),
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        ],
+  // Card de Ejercicio interactuable con ripple y navegación
+  Widget _buildExerciseCard(
+    BuildContext context,
+    String title,
+    IconData icon,
+    Widget destino,
+  ) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => destino));
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        width: 120,
+        margin: const EdgeInsets.only(right: 12),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Theme.of(context).dividerColor),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 40, color: Theme.of(context).colorScheme.primary),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  // Widget para tarjetas de consejos
-  Widget _buildTipCard(String title, IconData icon, String description) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.blue.shade200),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 32, color: Colors.blue),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(description, style: const TextStyle(color: Colors.grey)),
-              ],
+  // Card de Consejo interactuable con ripple y navegación
+  Widget _buildTipCard(
+    BuildContext context,
+    String title,
+    IconData icon,
+    String description,
+    Widget destino,
+  ) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => destino));
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Theme.of(context).dividerColor),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              size: 32,
+              color: Theme.of(context).colorScheme.secondary,
             ),
-          ),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    description,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).hintColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
