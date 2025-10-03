@@ -1,7 +1,7 @@
+import 'package:app_fitfeast/src/core/navigation_bottom_bar.dart';
 import 'package:app_fitfeast/src/features/auth_presentation/views/register_screen.dart';
-import 'package:app_fitfeast/widgetAux';
 import 'package:flutter/material.dart';
-import './auth_service.dart';
+import '../../../core/services/auth_service.dart';
 
 class LoginFitFeast extends StatefulWidget {
   const LoginFitFeast({super.key});
@@ -18,7 +18,7 @@ class _LoginFitFeastState extends State<LoginFitFeast> {
 
   bool _loading = false;
   String? _error;
-  bool _obscurePassword = true; // 👈 controla visibilidad de la contraseña
+  bool _obscurePassword = true;
 
   Future<void> _onLogin() async {
     if (!_formKey.currentState!.validate()) return;
@@ -27,6 +27,15 @@ class _LoginFitFeastState extends State<LoginFitFeast> {
       _loading = true;
       _error = null;
     });
+
+    // Mostrar pantalla de carga
+    await Navigator.push(
+      context,
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (_, __, ___) => const LoadingScreen(),
+      ),
+    );
 
     try {
       final success = await _authService.login(
@@ -41,7 +50,6 @@ class _LoginFitFeastState extends State<LoginFitFeast> {
           context,
         ).showSnackBar(const SnackBar(content: Text("Login exitoso")));
 
-        // 👇 Navegar al contenedor principal
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const NavigationBottomBar()),
@@ -134,10 +142,6 @@ class _LoginFitFeastState extends State<LoginFitFeast> {
                     : null,
               ),
               const SizedBox(height: 24),
-              if (_loading)
-                const Center(
-                  child: CircularProgressIndicator(color: Colors.black),
-                ),
               if (_error != null)
                 Text(_error!, style: const TextStyle(color: Colors.red)),
               ElevatedButton(
@@ -179,6 +183,24 @@ class _LoginFitFeastState extends State<LoginFitFeast> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class LoadingScreen extends StatelessWidget {
+  const LoadingScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pop(context); // Cierra la pantalla de carga automáticamente
+    });
+
+    return const Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: CircularProgressIndicator(color: Colors.black, strokeWidth: 3),
       ),
     );
   }
