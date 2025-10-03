@@ -1,4 +1,4 @@
-import 'package:app_fitfeast/src/features/auth_presentation/views/auth_service.dart';
+import 'package:app_fitfeast/src/core/services/auth_service.dart';
 import 'package:app_fitfeast/src/features/auth_presentation/views/login_screen.dart';
 import 'package:flutter/material.dart';
 
