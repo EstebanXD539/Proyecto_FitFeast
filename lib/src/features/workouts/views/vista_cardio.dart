@@ -29,9 +29,7 @@ class VistaCardio extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () {
-                // Aquí podrías iniciar un temporizador o registrar progreso
-              },
+              onPressed: () {},
               child: const Text("Iniciar sesión de cardio"),
             ),
           ],

@@ -28,9 +28,7 @@ class VistaFuerza extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () {
-                // Aquí podrías registrar una rutina de fuerza
-              },
+              onPressed: () {},
               child: const Text("Iniciar rutina de fuerza"),
             ),
           ],

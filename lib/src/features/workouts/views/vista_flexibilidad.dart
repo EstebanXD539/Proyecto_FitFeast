@@ -28,9 +28,7 @@ class VistaFlexibilidad extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () {
-                // Aquí podrías iniciar una rutina de estiramientos
-              },
+              onPressed: () {},
               child: const Text("Iniciar sesión de flexibilidad"),
             ),
           ],

@@ -28,9 +28,7 @@ class VistaCiclismo extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () {
-                // Aquí podrías registrar progreso de ciclismo
-              },
+              onPressed: () {},
               child: const Text("Iniciar sesión de ciclismo"),
             ),
           ],

@@ -28,9 +28,7 @@ class VistaPilates extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () {
-                // Aquí podrías iniciar una rutina de pilates
-              },
+              onPressed: () {},
               child: const Text("Iniciar sesión de pilates"),
             ),
           ],
