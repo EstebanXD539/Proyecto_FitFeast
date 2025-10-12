@@ -16,8 +16,6 @@ class RutinaCompletada extends StatelessWidget {
         child: ListView(
           children: [
             const SizedBox(height: 40),
-
-            // Imagen del ejercicio
             SizedBox(
               height: 200,
               child: Image.network(
@@ -28,8 +26,6 @@ class RutinaCompletada extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-
-            // Nombre y descripción
             Center(
               child: Column(
                 children: [
@@ -51,8 +47,6 @@ class RutinaCompletada extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 32),
-
-            // Detalles
             Text(
               "Detalles del ejercicio",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -78,8 +72,6 @@ class RutinaCompletada extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),
-
-            // Consejos
             Text(
               "Consejos post-entrenamiento",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
